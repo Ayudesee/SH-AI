@@ -33,17 +33,17 @@ def roi(img, vertices):
 def draw_lines(img, lines):
     try:
         for line in lines:
-            # print(lines[0])
             x1, y1, x2, y2 = line[0]
-            # print(line)
-            cv2.line(img, (x1, y1), (x2, y2), [255, 255, 255], 3)
+            cv2.line(img, (x1, y1), (x2, y2), [255, 0, 0], 1)
     except:
         pass
 
 
 def process_img(original_image):
     processed_img = cv2.cvtColor(original_image, cv2.COLOR_BGR2GRAY)
-    processed_img = cv2.Canny(processed_img, threshold1=140, threshold2=160)
+    processed_img = cv2.Canny(processed_img, threshold1=1, threshold2=1, apertureSize=3)
+    # lines = cv2.HoughLinesP(processed_img, 1, np.pi / 180, 100, minLineLength=100, maxLineGap=15)
+    # draw_lines(processed_img, lines)
     vertices = np.array([[0, 37], [310, 37], [330, 0], [430, 0], [460, 37],
                          [610, 37], [660, 50], [767, 50], [767, 519], [0, 519]])
     processed_img = roi(processed_img, [vertices])
@@ -51,39 +51,33 @@ def process_img(original_image):
 
 
 def main():
-    last_time = time.time()
-    count = 0
-    # pgui.sleep(4)
-    print('START')
-
-    training_data = []
-    # file_name = 'C:/Users/Public/training_data_BlackSndWhite.npy'
-    # if os.path.isfile(file_name):
-    #     print('File exists')
-    #     training_data = list(np.load(file_name, allow_pickle=True))
-    # else:
-    #     print('File does not exist, going from zero')
-    #     training_data = []
-
+    file_name = 'C:/Users/Public/training_data_BlackSndWhite.npy'
+    if os.path.isfile(file_name):
+        print('File exists')
+        training_data = list(np.load(file_name, allow_pickle=True))
+    else:
+        print('File does not exist, going from zero')
+        training_data = []
+    time.sleep(1)
     while True:
-        count += 1
+
         screen = np.array(ImageGrab.grab(bbox=(0, 40, 768, 520)))
         keys = key_check()
         output = key_to_output(keys)
         # print('Loop took {} seconds'.format(time.time() - last_time))
-        last_time = time.time()
+        # last_time = time.time()
         screen = process_img(screen)
         cv2.imshow('window', screen)
         screen = cv2.resize(screen, (152, 104))
 
-        # training_data.append([screen, output])
+        training_data.append([screen, output])
         if cv2.waitKey(25) & 0xFF == ord('q'):
             cv2.destroyAllWindows()
             break
 
-        # if len(training_data) % 500 == 0:
-        #     print(len(training_data))
-        #     np.save(file_name, training_data)
+        if len(training_data) % 500 == 0:
+            print(len(training_data))
+            np.save(file_name, training_data)
 
 
 main()

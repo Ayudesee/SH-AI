@@ -11,6 +11,8 @@ df = pd.DataFrame(train_data)
 print(df.head())
 print(Counter(df[1].apply(str)))
 
+
+
 lefts = []
 rights = []
 nothings = []
@@ -19,6 +21,7 @@ shuffle(train_data)
 
 for data in train_data:
     img = data[0]
+    img = cv2.Canny(img, threshold1=1, threshold2=1, apertureSize=3)
     choice = data[1]
     if choice == [0, 0, 1]:
         rights.append([img, choice])
@@ -28,6 +31,8 @@ for data in train_data:
         nothings.append([img, choice])
     else:
         print('something wrong with choices')
+
+
 
 nothings = nothings[:len(lefts)][:len(rights)]
 lefts = lefts[:len(rights)]
@@ -39,15 +44,15 @@ shuffle(final_data)
 
 print('final_data length = {}'.format(len(final_data)))
 
-np.save('training_data_GRAY_v2.npy', final_data)
+np.save('training_data_after_Canny.npy', final_data)
 
-# for data in train_data[15000:]:
-#     img = data[0]
-#     choice = data[1]
-#     img = cv2.resize(img, (768, 520))
-#     cv2.imshow('test', img)
-#     print(choice)
-#     time.sleep(0.1)
-#     if cv2.waitKey(25) & 0xFF == ord('q'):
-#         cv2.destroyAllWindows()
-#         break
+for data in final_data:
+    img = data[0]
+    choice = data[1]
+    img = cv2.resize(img, (768, 520))
+    cv2.imshow('test', img)
+    print(choice)
+    time.sleep(0.1)
+    if cv2.waitKey(25) & 0xFF == ord('q'):
+        cv2.destroyAllWindows()
+        break

@@ -5,7 +5,7 @@ import cv2
 import time
 import datetime
 
-file_name = 'D:/Ayudesee/Other/PyProj/pythonProject2/training_data_GRAY_v2.npy'
+file_name = 'D:/Ayudesee/Other/PyProj/pythonProject2/training_data_after_Canny.npy'
 # file_name = 'D:/Ayudesee/Other/PyProj/pythonProject2/training_data_GRAY.npy'
 
 training_data = list(np.load(file_name, allow_pickle=True))
