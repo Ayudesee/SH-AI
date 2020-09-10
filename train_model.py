@@ -31,4 +31,4 @@ model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accur
 
 model.fit(imgs, choices, epochs=10, callbacks=tensorboard_callback)
 
-model.save('models/model-{}-{}-{}-{}'.format(month, day, hrs, mins))
+model.save('model-{}-{}-{}-{}'.format(month, day, hrs, mins))
