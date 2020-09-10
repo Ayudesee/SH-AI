@@ -5,7 +5,7 @@ import cv2
 from directkeys import ReleaseKey, PressKey, A, D
 
 def main():
-    filepath = 'models/model-9-10-21-36'
+    filepath = 'models/model-9-10-23-4'
 
     model = tf.keras.models.load_model(filepath=filepath)
     while True:

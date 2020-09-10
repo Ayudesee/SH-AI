@@ -14,21 +14,29 @@ training_data = np.load(file_name, allow_pickle=True)
 
 imgs = []
 choices = []
-for data in training_data:
+imgs_test = []
+choices_test = []
+for data in training_data[:-200]:
     imgs.append(data[0])
     choices.append(data[1])
+for data in training_data[-200:]:
+    imgs_test.append(data[0])
+    choices_test.append(data[1])
 
 imgs = np.array(imgs)
 choices = np.array(choices)
+imgs_test = np.array(imgs_test)
+choices_test = np.array(choices_test)
 
 model = tf.keras.models.Sequential()
 model.add(tf.keras.layers.Flatten(input_shape=(104, 152)))
-model.add(tf.keras.layers.Dense(256, activation=tf.nn.relu))
-model.add(tf.keras.layers.Dense(256, activation=tf.nn.relu))
+model.add(tf.keras.layers.Dense(128, activation=tf.nn.relu))
+model.add(tf.keras.layers.Dense(128, activation=tf.nn.relu))
 model.add(tf.keras.layers.Dense(3, activation=tf.nn.softmax))
 model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 
 
 model.fit(imgs, choices, epochs=10, callbacks=tensorboard_callback)
-
-model.save('model-{}-{}-{}-{}'.format(month, day, hrs, mins))
+val_loss, val_acc = model.evaluate(imgs_test, choices_test)
+print('val_loss={}, val_acc={}'.format(val_loss, val_acc))
+model.save('models/model-{}-{}-{}-{}'.format(month, day, hrs, mins))
