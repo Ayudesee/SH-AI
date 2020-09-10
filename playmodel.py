@@ -4,8 +4,9 @@ import numpy as np
 import cv2
 from directkeys import ReleaseKey, PressKey, A, D
 
+
 def main():
-    filepath = 'models/model-9-10-23-4'
+    filepath = 'models/model-9-11-0-9'
 
     model = tf.keras.models.load_model(filepath=filepath)
     while True:

@@ -32,6 +32,7 @@ choices_test = np.array(choices_test)
 model = tf.keras.models.Sequential()
 model.add(tf.keras.layers.Flatten(input_shape=(104, 152)))
 
+# TODO: Conv2D layer instead of Flatten
 # model.add(tf.keras.layers.Conv2D(64, (2, 2), padding="same", activation="relu"))
 # model.add(tf.keras.layers.MaxPooling2D(pool_size=(2, 2)))
 
@@ -41,7 +42,7 @@ model.add(tf.keras.layers.Dense(3, activation=tf.nn.softmax))
 model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 
 
-model.fit(imgs, choices, epochs=10, callbacks=tensorboard_callback)
-val_loss, val_acc = model.evaluate(imgs_test, choices_test)
+model.fit(imgs, choices, epochs=5, callbacks=tensorboard_callback)
+val_loss, val_acc = model.evaluate(imgs_test, choices_test, callbacks=tensorboard_callback)
 print('val_loss={}, val_acc={}'.format(val_loss, val_acc))
 model.save('models/model-{}-{}-{}-{}'.format(month, day, hrs, mins))
