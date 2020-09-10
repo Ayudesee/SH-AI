@@ -23,16 +23,20 @@ for data in training_data[-200:]:
     imgs_test.append(data[0])
     choices_test.append(data[1])
 
-imgs = np.array(imgs)
+imgs = np.array(imgs, dtype='float32')
+imgs = np.reshape(imgs, (-1, 104, 152, 1))
 choices = np.array(choices)
 imgs_test = np.array(imgs_test)
 choices_test = np.array(choices_test)
 
 model = tf.keras.models.Sequential()
 model.add(tf.keras.layers.Flatten(input_shape=(104, 152)))
-model.add(tf.keras.layers.Dense(128, activation=tf.nn.relu))
-model.add(tf.keras.layers.Dense(128, activation=tf.nn.relu))
-model.add(tf.keras.layers.Dense(128, activation=tf.nn.relu))
+
+# model.add(tf.keras.layers.Conv2D(64, (2, 2), padding="same", activation="relu"))
+# model.add(tf.keras.layers.MaxPooling2D(pool_size=(2, 2)))
+
+model.add(tf.keras.layers.Dense(1024, activation=tf.nn.relu))
+model.add(tf.keras.layers.Dense(512, activation=tf.nn.relu))
 model.add(tf.keras.layers.Dense(3, activation=tf.nn.softmax))
 model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 
