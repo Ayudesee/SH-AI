@@ -32,6 +32,7 @@ model = tf.keras.models.Sequential()
 model.add(tf.keras.layers.Flatten(input_shape=(104, 152)))
 model.add(tf.keras.layers.Dense(128, activation=tf.nn.relu))
 model.add(tf.keras.layers.Dense(128, activation=tf.nn.relu))
+model.add(tf.keras.layers.Dense(128, activation=tf.nn.relu))
 model.add(tf.keras.layers.Dense(3, activation=tf.nn.softmax))
 model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 
