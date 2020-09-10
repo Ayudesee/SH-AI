@@ -11,8 +11,6 @@ df = pd.DataFrame(train_data)
 print(df.head())
 print(Counter(df[1].apply(str)))
 
-
-
 lefts = []
 rights = []
 nothings = []
@@ -31,8 +29,6 @@ for data in train_data:
         nothings.append([img, choice])
     else:
         print('something wrong with choices')
-
-
 
 nothings = nothings[:len(lefts)][:len(rights)]
 lefts = lefts[:len(rights)]

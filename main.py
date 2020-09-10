@@ -70,14 +70,17 @@ def main():
         cv2.imshow('window', screen)
         screen = cv2.resize(screen, (152, 104))
 
+
         training_data.append([screen, output])
+
         if cv2.waitKey(25) & 0xFF == ord('q'):
             cv2.destroyAllWindows()
             break
 
-        if len(training_data) % 500 == 0:
-            print(len(training_data))
-            np.save(file_name, training_data)
+        # if len(training_data) % 500 == 0:
+        #     training_data = np.asarray(training_data)
+        #     print(len(training_data))
+        #     np.save(file_name, training_data)
 
 
 main()

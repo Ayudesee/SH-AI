@@ -1,26 +1,36 @@
+import tensorflow as tf
 import numpy as np
-from alexnet import alexnet
+import cv2
 
-WIDTH = 152
-HEIGHT = 104
-LR = 1e-3
-EPOCHS = 8
-MODEL_NAME = 'hexagon-{}-{}-{}-epochs.model'.format(LR, 'alexnetv2', EPOCHS)
 
-model = alexnet(WIDTH, HEIGHT, LR)
+file_name = 'D:/Ayudesee/Other/PyProj/pythonProject2/training_data_after_Canny.npy'
 
-train_data = np.load('training_data_GRAY_v2.npy')
+training_data = np.load(file_name, allow_pickle=True)
 
-train = train_data[:-160]
-test = train_data[-160:]
+imgs = []
+choices = []
+for data in training_data:
+    imgs.append(data[0])
+    choices.append(data[1])
 
-X = np.array([i[0] for i in train]).reshape(-1, WIDTH, HEIGHT, 1)
-Y = [i[0] for i in train]
 
-test_x = np.array([i[0] for i in test]).reshape(-1, WIDTH, HEIGHT, 1)
-test_y = np.array([i[0] for i in test])
 
-model.fit({'input': X}, {'targets': Y}, n_epoch=EPOCHS, validation_set=({'input': test_x}, {'targets': test_y}),
-          snapshot_step=160, show_metric=True, run_id=MODEL_NAME)
 
-model.save(MODEL_NAME)
+imgs = np.array(imgs)
+choices = np.array(choices)
+
+model = tf.keras.models.Sequential()
+model.add(tf.keras.layers.Flatten(input_shape=(104, 152)))
+model.add(tf.keras.layers.Dense(256, activation=tf.nn.relu))
+model.add(tf.keras.layers.Dense(256, activation=tf.nn.relu))
+model.add(tf.keras.layers.Dense(3, activation=tf.nn.softmax))
+
+model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+
+
+model.fit(imgs, choices, epochs=5)
+
+img_test = np.reshape(imgs[80], (1, -1))
+predict = model.predict(img_test)
+print(predict)
+
