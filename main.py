@@ -7,6 +7,7 @@ import os
 from keys import PressKey, ReleaseKey, keyA, keyD
 import pyautogui as pgui
 from getkeys import key_check
+from train_model import my_model
 
 
 def key_to_output(keys):
@@ -50,8 +51,8 @@ def process_img(original_image):
     return processed_img
 
 
-def main():
-    file_name = 'C:/Users/Public/training_data_BlackSndWhite.npy'
+def start_recording():
+    file_name = 'C:/Users/Public/training_data_BlackSndWhite_2.npy'
     if os.path.isfile(file_name):
         print('File exists')
         training_data = list(np.load(file_name, allow_pickle=True))
@@ -70,17 +71,20 @@ def main():
         cv2.imshow('window', screen)
         screen = cv2.resize(screen, (152, 104))
 
-
         training_data.append([screen, output])
 
-        if cv2.waitKey(25) & 0xFF == ord('q'):
+        if cv2.waitKey(10) & 0xFF == ord('q'):
             cv2.destroyAllWindows()
             break
 
-        # if len(training_data) % 500 == 0:
-        #     training_data = np.asarray(training_data)
-        #     print(len(training_data))
-        #     np.save(file_name, training_data)
+        if len(training_data) % 500 == 0:
+            # training_data = np.asarray(training_data)
+            print(len(training_data))
+            np.save(file_name, training_data)
+
+
+def main():
+    start_recording()
 
 
 main()

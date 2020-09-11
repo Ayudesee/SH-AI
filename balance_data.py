@@ -5,7 +5,7 @@ from random import shuffle
 import cv2
 import time
 
-train_data = np.load('training_data_GRAY.npy', allow_pickle=True)
+train_data = np.load('training_data_BlackSndWhite_2.npy', allow_pickle=True)
 print('train_data length = {}'.format(len(train_data)))
 df = pd.DataFrame(train_data)
 print(df.head())
@@ -40,15 +40,15 @@ shuffle(final_data)
 
 print('final_data length = {}'.format(len(final_data)))
 
-np.save('training_data_after_Canny.npy', final_data)
+np.save('training_data_BlackSndWhite_2_v2.npy', final_data)
 
-for data in final_data:
-    img = data[0]
-    choice = data[1]
-    img = cv2.resize(img, (768, 520))
-    cv2.imshow('test', img)
-    print(choice)
-    time.sleep(0.1)
-    if cv2.waitKey(25) & 0xFF == ord('q'):
-        cv2.destroyAllWindows()
-        break
+# for data in final_data:
+#     img = data[0]
+#     choice = data[1]
+#     img = cv2.resize(img, (768, 520))
+#     cv2.imshow('test', img)
+#     print(choice)
+#     time.sleep(0.1)
+#     if cv2.waitKey(25) & 0xFF == ord('q'):
+#         cv2.destroyAllWindows()
+#         break
