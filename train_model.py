@@ -44,16 +44,38 @@ def train_model():
 
     model = tf.keras.models.Sequential()
     # model.add(tf.keras.layers.Flatten(input_shape=(104, 152)))
-    # TODO: Conv2D layer instead of Flatten
-    model.add(tf.keras.layers.Conv2D(32, (2, 2), padding="same", activation="relu", input_shape=(104, 152, 1)))
-    model.add(tf.keras.layers.MaxPooling2D(pool_size=(2, 2)))
+    model.add(tf.keras.layers.Conv2D(32, (3, 3), padding="same", activation="relu", input_shape=(104, 152, 1), strides=(4, 4)))
+    # model.add(tf.keras.layers.MaxPooling2D(pool_size=(4, 4), strides=(2, 2)))
+    model.add(tf.keras.layers.Dropout(0.2))
+    model.add(tf.keras.layers.BatchNormalization())
+
+    model.add(tf.keras.layers.Conv2D(filters=64, kernel_size=(3, 3), strides=(2, 2), padding='same'))
+    model.add(tf.keras.layers.MaxPooling2D(pool_size=(2, 2), padding='same'))
+    model.add(tf.keras.layers.Dropout(0.2))
+    model.add(tf.keras.layers.BatchNormalization())
+
+    model.add(tf.keras.layers.Conv2D(filters=64, kernel_size=(3, 3), strides=(2, 2), padding='same'))
+    model.add(tf.keras.layers.MaxPooling2D(pool_size=(2, 2), padding='same'))
+    model.add(tf.keras.layers.Dropout(0.2))
+    model.add(tf.keras.layers.BatchNormalization())
+
     model.add(tf.keras.layers.Flatten(input_shape=(104, 152)))
+    model.add(tf.keras.layers.Dropout(0.2))
+
     model.add(tf.keras.layers.Dense(256, activation=tf.nn.relu))
-    model.add(tf.keras.layers.Dense(256, activation=tf.nn.relu))
+    model.add(tf.keras.layers.Dropout(0.2))
+    model.add(tf.keras.layers.BatchNormalization())
+
+    model.add(tf.keras.layers.Dense(128, activation=tf.nn.relu))
+    model.add(tf.keras.layers.Dropout(0.2))
+    model.add(tf.keras.layers.BatchNormalization())
+
     model.add(tf.keras.layers.Dense(3, activation=tf.nn.softmax))
     model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 
-    model.fit(imgs, choices, epochs=5, callbacks=tensorboard_callback)
+    model.summary()
+
+    model.fit(imgs, choices, epochs=10, callbacks=tensorboard_callback)
     val_loss, val_acc = model.evaluate(imgs_test, choices_test)
     print('val_loss = {}, val_acc = {}'.format(val_loss, val_acc))
     model.save(modelname)

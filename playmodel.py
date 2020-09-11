@@ -6,7 +6,7 @@ from directkeys import ReleaseKey, PressKey, A, D
 
 
 def main():
-    filepath = 'models/model-9-11-21-10'
+    filepath = 'models/model-9-11-21-51'
 
     model = tf.keras.models.load_model(filepath=filepath)
     while True:
