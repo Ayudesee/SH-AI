@@ -62,7 +62,7 @@ def start_recording():
     time.sleep(1)
     while True:
 
-        screen = np.array(ImageGrab.grab(bbox=(0, 40, 768, 520)))
+        screen = np.array(ImageGrab.grab(bbox=(0, 32, 768, 512)))
         keys = key_check()
         output = key_to_output(keys)
         # print('Loop took {} seconds'.format(time.time() - last_time))
