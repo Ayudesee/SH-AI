@@ -24,15 +24,17 @@ def key_to_output(keys):
 
 
 def start_recording():
-    file_name = 'C:/Users/Public/raw_data_screen.npy'
-    if os.path.isfile(file_name):
-        print('File exists')
-        training_data = list(np.load(file_name, allow_pickle=True))
-    else:
-        print('File does not exist, going from zero')
-        training_data = []
+    # file_name = 'C:/Users/Public/raw_data_screen.npy'
+    # if os.path.isfile(file_name):
+    #     print('File exists')
+    #     training_data = list(np.load(file_name, allow_pickle=True))
+    # else:
+    #     print('File does not exist, going from zero')
+    #     training_data = []
+    training_data = []
     time.sleep(2)
-
+    counter_for_filename = 490
+    print('Starting from {}'.format(counter_for_filename))
     while True:
         screen = np.array(ImageGrab.grab(bbox=(0, 32, 768, 512)))
         keys = key_check()
@@ -46,8 +48,11 @@ def start_recording():
         training_data.append([screen, output])
 
         if len(training_data) % 500 == 0:
-            print(len(training_data))
+            print('{} : {} Mb'.format(counter_for_filename, int(counter_for_filename * 22.58)))
+            file_name = 'C:/Users/Public/raw_data/raw_data_screen{}.npy'.format(counter_for_filename)
             np.save(file_name, training_data)
+            counter_for_filename += 1
+            training_data = []
 
 
 def main():

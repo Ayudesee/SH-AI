@@ -6,14 +6,16 @@ from directkeys import ReleaseKey, PressKey, A, D
 
 
 def main():
-    filepath = 'models/model-9-12-11-17'
+    filepath = 'models/model-9-15-11-9d'
 
     model = tf.keras.models.load_model(filepath=filepath)
     while True:
         screen = gs()
         screen = np.array(screen)
         screen = cv2.resize(screen, (152, 104))
-        screen = np.reshape(screen, (-1, 104, 152, 1))
+        screen = cv2.Canny(screen, threshold1=1, threshold2=1, apertureSize=3)
+        screen = np.reshape(screen, (-1, 152, 104, 1))
+
         prediction = model.predict(screen)
         print(prediction)
 
