@@ -2,7 +2,7 @@ import numpy as np
 import cv2
 import os
 
-FILE_END = 1
+FILE_END = 260
 
 
 def load_raw_data(i):
@@ -28,22 +28,16 @@ def process_img(original_image):
     processed_img = cv2.Canny(processed_img, threshold1=1, threshold2=1, apertureSize=3)
     processed_img_center = processed_img[y1:y2+1, x1:x2+1]
     processed_img = roi(processed_img, [vertices_screen], [vertices_screen_center])
-    # processed_img = cv2.resize(processed_img, (152, 104))
     return processed_img, processed_img_center
 
 
 def main():
     for i in range(1, FILE_END + 1):
-        imgs = []
-        choices = []
         full_processed_data = []
-        # filename_processed = 'D:/Ayudesee/Other/Data/raw_data_processed_blurred/raw_data_screen_processed_blurred{}.npy'.format(i)
-        filename_processed = 'D:/Ayudesee/Other/Data/processed_two_images/data1.npy'
+        filename_processed = 'D:/Ayudesee/Other/Data/processed_two_images/data{}.npy'.format(i)
         raw_data = load_raw_data(i)
         for data in raw_data:  # data[0] = [[img], [choice]]
-            # img.append(process_img(data[0]))
             img, img_center = process_img(data[0])
-            # choices.append((data[1]))
             full_processed_data.append([img, img_center, data[1]])
 
         full_processed_data = np.array(full_processed_data)
