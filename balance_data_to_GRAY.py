@@ -18,19 +18,12 @@ nothings = []
 shuffle(train_data)
 
 
-def apply_filters(original_img):
-    processed_img = cv2.Canny(original_img, threshold1=1, threshold2=1, apertureSize=3)
-
-
-    return processed_img
-
 for data in train_data:
     img = apply_filters(data[0])
     choice = data[1]
     cv2.imshow('w', img)
     if cv2.waitKey(200) & 0xFF == ord('q'):
         cv2.destroyAllWindows()
-
 
     if choice == [0, 0, 1]:
         rights.append([img, choice])
