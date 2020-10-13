@@ -2,11 +2,11 @@ import numpy as np
 import cv2
 import os
 
-FILE_END = 578
+FILE_END = 235
 
 
 def load_raw_data(i):
-    file_name_shuffled = 'D:/Ayudesee/Other/Data/raw_data_shuffled/raw_data_screen_shuffled{}.npy'.format(i)
+    file_name_shuffled = 'D:/Ayudesee/Other/Data/raw_data_shuffled/data{}.npy'.format(i)
     train_data = np.load(file_name_shuffled, allow_pickle=True)
     return train_data
 
@@ -31,11 +31,9 @@ def main():
         # imgs = []
         # choices = []
         full_processed_data = []
-        file_name_processed = 'C:/Users/Public/raw_data_shuffled_processed/raw_data_screen_shuffled_processed{}.npy'.format(i)
+        file_name_processed = 'D:/Ayudesee/Other/Data/raw_data_shuffled_processed/data{}.npy'.format(i)
         raw_data = load_raw_data(i)
         for data in raw_data:  # data[0] = [[img], [choice]]
-            # imgs.append(process_img(data[0]))
-            # choices.append((data[1]))
             full_processed_data.append([process_img(data[0]), data[1]])
 
         full_processed_data = np.array(full_processed_data)

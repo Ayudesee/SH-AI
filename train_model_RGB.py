@@ -342,7 +342,6 @@ def train_model_GRAY_partial():
                     print('training_data-{}.npy'.format(i), len(train_data))
                     data20 = np.array(data20)
                     train = data20[:-len(train_data) // 10]
-
                     test = data20[-len(train_data) // 10:]
 
                     X = np.array([i[0] for i in train]).reshape(-1, WIDTH, HEIGHT, 1)
