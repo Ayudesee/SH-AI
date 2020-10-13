@@ -4,18 +4,24 @@ import numpy as np
 import cv2
 from directkeys import ReleaseKey, PressKey, A, D
 
+vertices = np.array([[0, 8], [51, 8], [54, 0], [91, 0], [95, 11], [151, 11], [151, 103], [0, 103]])  # main screen coords
+
+
 
 def main():
-    filepath = 'models/model-9-15-11-9d'
+    filepath = 'models/model-10-13-21-59'
 
     model = tf.keras.models.load_model(filepath=filepath)
     while True:
         screen = gs()
-        screen = np.array(screen)
+        screen = cv2.cvtColor(screen, cv2.COLOR_BGR2GRAY)
         screen = cv2.resize(screen, (152, 104))
-        screen = cv2.Canny(screen, threshold1=1, threshold2=1, apertureSize=3)
-        screen = np.reshape(screen, (-1, 152, 104, 1))
+        screen = cv2.Canny(screen, threshold1=140, threshold2=170, apertureSize=3)
+        cv2.imshow('w', screen)
+        if cv2.waitKey(20) & 0xFF == ord('q'):
+            cv2.destroyAllWindows()
 
+        screen = np.reshape(screen, (-1, 152, 104, 1))
         prediction = model.predict(screen)
         print(prediction)
 
